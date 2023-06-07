@@ -3,7 +3,6 @@
 ## 资料
 对标社区访问地址
 https://elasticsearch.cn/
-使用git commit --amend --no-edit
 ## 工具
 git
 github
