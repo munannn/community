@@ -1,2 +1,10 @@
 server:
   port: 8887
+
+#AccessTokenDTO???
+github:
+  client:
+    id: 2460e9ed3a43ca25a73e
+    secret: c8dfe3cbd804ab5e22f34a7cfaf3447f2f537f59
+  redirect:
+    id: http://localhost:8887/callback
