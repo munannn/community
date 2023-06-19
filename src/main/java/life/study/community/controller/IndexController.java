@@ -1,7 +1,13 @@
 package life.study.community.controller;
 
+import life.study.community.mapper.GitHubUserMapper;
+import life.study.community.model.GitHubUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author 木南
@@ -10,8 +16,25 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class IndexController {
+
+    @Autowired
+    private GitHubUserMapper gitHubUserMapper;
+
     @GetMapping("/")
-    public String index() {
+    public String index(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("token")) {
+                    String token = cookie.getValue();
+                    GitHubUser gitHubUser = gitHubUserMapper.selectUserByToken(token);
+                    if (gitHubUser != null) {
+                        request.getSession().setAttribute("gitHubUser", gitHubUser);
+                    }
+                    break;
+                }
+            }
+        }
         return "index";
     }
 }

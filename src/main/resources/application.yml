@@ -1,10 +1,19 @@
 server:
   port: 8887
 
-#AccessTokenDTO???
+#AccessTokenDTO配置
 github:
   client:
     id: 2460e9ed3a43ca25a73e
     secret: c8dfe3cbd804ab5e22f34a7cfaf3447f2f537f59
   redirect:
     id: http://localhost:8887/callback
+
+#druid配置
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/my_community?serverTimezone=UTC
+      username: root
+      password: 123456

@@ -32,9 +32,6 @@ public class GithubProvider {
             String token = string.split("&")[0].split("=")[1];
 //            String scope = string.split("&")[1].split("=")[1];
 //            String token_type = string.split("&")[2].split("=")[1];
-//            System.out.println(token);
-//            System.out.println(scope);
-//            System.out.println(token_type);
             return token;
         } catch (IOException ignored) {
         }
@@ -53,8 +50,7 @@ public class GithubProvider {
             Response response = client.newCall(request).execute();
             String string = response.body().string();
             // 通过fastjson自动将json对象转换为javaDTO
-            GithubUser githubUser = JSON.parseObject(string, GithubUser.class);
-            return githubUser;
+            return JSON.parseObject(string, GithubUser.class);
         } catch (IOException e) {
 //            throw new RuntimeException(e);
         }
