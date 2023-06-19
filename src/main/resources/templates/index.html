@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>毛大社区</title>
+    <title>灯塔</title>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
@@ -13,9 +13,9 @@
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">毛大社区</span>
+                <span class="sr-only">灯塔</span>
             </button>
-            <a class="navbar-brand" href="#">毛大社区</a>
+            <a class="navbar-brand" href="#">灯塔</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -27,18 +27,21 @@
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <!--通过session验证登录状态并显示不同功能-->
-                <li th:if="${session.gitHubUser == null}">
-                    <a href="/register">注册</a>
+                <li th:if="${session.user == null}">
+                    <a href="/registerPage">注册</a>
                 </li>
-                <li th:if="${session.gitHubUser == null}">
-                    <a href="/login">登录</a>
+                <li th:if="${session.user == null}">
+                    <a href="/loginPage">登录</a>
                 </li>
-                <li th:if="${session.gitHubUser == null}">
+                <li th:if="${session.user == null}">
                     <a href="https://github.com/login/oauth/authorize?client_id=2460e9ed3a43ca25a73e&redirect_uri=http://localhost:8887/callback&scope=gitHubUser&state=1">github登录</a>
                 </li>
-                <li class="dropdown" th:if="${session.gitHubUser != null}">
+                <li th:if="${session.user != null && session.user.role == 0}">
+                    <a href="/invitePage">邀请用户</a>
+                </li>
+                <li class="dropdown" th:if="${session.user != null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false" th:text="${session.gitHubUser.name}"><span class="caret"></span></a>
+                       aria-expanded="false" th:text="${session.user.account}"><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">消息中心</a></li>
                         <li><a href="#">个人资料</a></li>

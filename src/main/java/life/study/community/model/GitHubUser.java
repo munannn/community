@@ -5,6 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
+ * github_user表对应的实体类
  * @author 木南
  * @version 1.0
  * @date 2023/6/8 11:35

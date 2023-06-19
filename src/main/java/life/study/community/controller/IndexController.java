@@ -1,7 +1,9 @@
 package life.study.community.controller;
 
 import life.study.community.mapper.GitHubUserMapper;
+import life.study.community.mapper.UserMapper;
 import life.study.community.model.GitHubUser;
+import life.study.community.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,9 @@ public class IndexController {
     @Autowired
     private GitHubUserMapper gitHubUserMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @GetMapping("/")
     public String index(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
@@ -27,9 +32,9 @@ public class IndexController {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     String token = cookie.getValue();
-                    GitHubUser gitHubUser = gitHubUserMapper.selectUserByToken(token);
-                    if (gitHubUser != null) {
-                        request.getSession().setAttribute("gitHubUser", gitHubUser);
+                    User user = userMapper.selectUserByToken(token);
+                    if (user != null) {
+                        request.getSession().setAttribute("user", user);
                     }
                     break;
                 }

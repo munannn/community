@@ -3,6 +3,7 @@ package life.study.community.mapper;
 import life.study.community.model.GitHubUser;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -18,7 +19,8 @@ public interface GitHubUserMapper {
      * @param gitHubUser
      * @return
      */
-    @Insert("insert into `github_user` (account_id,name,email,token,create_time,modified_time,role) values (#{accountId},#{name}," +
+    @Insert("insert into `github_user` (account_id,name,email,token,create_time,modified_time,role) values " +
+            "(#{accountId},#{name}," +
             "#{email},#{token},#{createTime},#{modifiedTime},#{role})")
     int addUser(GitHubUser gitHubUser);
 
@@ -33,6 +35,7 @@ public interface GitHubUserMapper {
 
     /**
      * 根据account_id查找用户
+     *
      * @param accountId
      * @return
      */

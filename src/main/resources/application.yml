@@ -9,6 +9,7 @@ github:
   redirect:
     id: http://localhost:8887/callback
 
+
 #druid配置
 spring:
   datasource:
@@ -17,3 +18,17 @@ spring:
       url: jdbc:mysql://localhost:3306/my_community?serverTimezone=UTC
       username: root
       password: 123456
+  #QQ邮件服务配置
+  mail:
+    host: smtp.qq.com
+    port: 587
+    # 邮件发送方
+    username: 2087609705@qq.com
+    # 邮件服务授权码
+    password: nwclucagaupfciha
+    default-encoding: UTF-8
+
+#开启驼峰命名转换：即表字段create_time 对应 实体类属性 createTime
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
