@@ -1,17 +1,21 @@
 package life.study.community.controller;
 
+import life.study.community.dto.TopicDTO;
 import life.study.community.mapper.GitHubUserMapper;
 import life.study.community.mapper.UserMapper;
 import life.study.community.model.GitHubUser;
 import life.study.community.model.User;
+import life.study.community.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @author 木南
@@ -27,8 +31,12 @@ public class IndexController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private TopicService topicService;
+
     @RequestMapping("/")
-    public String index(HttpServletRequest request) {
+    public String index(HttpServletRequest request,
+                        Model model) {
         HttpSession session = request.getSession();
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -46,6 +54,8 @@ public class IndexController {
                 }
             }
         }
+        List<TopicDTO> topicDTOList = topicService.getTopicList();
+        model.addAttribute("topicList",topicDTOList);
         return "index";
     }
 }

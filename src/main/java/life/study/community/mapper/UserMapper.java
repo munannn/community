@@ -50,8 +50,8 @@ public interface UserMapper {
      * @param user
      * @return
      */
-    @Insert("insert into `user` (`account`,`password`,`role`,`token`,`create_by`,`create_time`,`modified_time`," +
-            "`is_deleted`,`deleted_time`) values (#{account},#{password},#{role},#{token},#{createBy},#{createTime}," +
+    @Insert("insert into `user` (`account`,`username`,`password`,`role`,`token`,`create_by`,`create_time`,`modified_time`," +
+            "`is_deleted`,`deleted_time`) values (#{account},#{username},#{password},#{role},#{token},#{createBy},#{createTime}," +
             "#{modifiedTime},#{isDeleted},#{deletedTime})")
     int insertUser(User user);
 
@@ -62,4 +62,12 @@ public interface UserMapper {
      */
     @Update("update `user` set `token` = '' where `token` = #{token}")
     int clearUserToken(String token);
+
+    /**
+     * 根据帖子发布者id查找对应用户
+     * @param publishBy
+     * @return
+     */
+    @Select("select * from `user` where id = #{id}")
+    User selectUserById(@Param("id") Integer publishBy);
 }

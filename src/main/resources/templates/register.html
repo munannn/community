@@ -10,6 +10,7 @@
 		<script type="text/javascript" src="js/jquery-1.11.3.js" ></script>		
 		<script type="text/javascript" src="js/bootstrap.js" ></script>
 		<script type="text/javascript" src="js/templet.js" ></script>
+		<script type="text/javascript" src="js/hp.js" ></script>
 		<title></title>
 	</head>
 	<body>
@@ -27,23 +28,23 @@
 						<div class="form-group">
     						<label for="account">邮箱账号 *</label>
     						<input type="text" class="form-control" id="account" name="account">
-    						<span class="pp hide">此项必须填写</span>
+    						<span class="pp hide" id="account-error">此项必须填写</span>
   						</div>
+						<div class="form-group">
+							<label for="username">用户名 *</label>
+							<input type="text" class="form-control" id="username" name="username">
+							<span class="pp hide" id="username-error">此项必须填写</span>
+						</div>
   						<div class="form-group">
     						<label for="password">密码 <img class="help" src="/img/help.png" title="最少8位"/>*</label>
     						<input type="password" class="form-control" id="password" name="password">
-  							<span class="pp hide">此项必须填写</span>
+  							<span class="pp hide" id="password-error">此项必须填写</span>
   						</div>
 						<div class="form-group">
 							<label for="invitationCode">邀请码 </label>
 							<input type="text" class="form-control" id="invitationCode" name="invitationCode">
+							<span class="pp hide" id="invitationCode-error">此项必须填写</span>
 						</div>
-  						<div class="form-group">
-    						<label for="question">验证问题 *</label>
-    						<p style="color: #CCCCCC; font-size: 14px;">请回答: <label id="answer" style="color: #CCCCCC; font-size: 14px;"></label> 等于几?</p>
-    						<input type="text" class="form-control" id="question">
-  							<span class="pp hide">此项必须填写</span>
-  						</div>
   						<div class="checkbox">
     						<label>
      		 					<input type="checkbox" checked> 我已经阅读并同意<a>服务条款</a>以及<a>法律声明</a>。
@@ -68,5 +69,56 @@
 		</div>
 	</div>
 	</body>
-	<script type="text/javascript" src="js/hp.js" ></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("form").submit(function(event) {
+				// Prevent form submission if validation fails
+				if (!validateForm()) {
+					event.preventDefault();
+				}
+			});
+		});
+
+		function validateForm() {
+			var isValid = true;
+
+			// Validate email account
+			var account = $("#account").val().trim();
+			if (account === "") {
+				$("#account-error").removeClass("hide");
+				isValid = false;
+			} else {
+				$("#account-error").addClass("hide");
+			}
+
+			// Validate username
+			var username = $("#username").val().trim();
+			if (username === "") {
+				$("#username-error").removeClass("hide");
+				isValid = false;
+			} else {
+				$("#username-error").addClass("hide");
+			}
+
+			// Validate password
+			var password = $("#password").val().trim();
+			if (password === "") {
+				$("#password-error").removeClass("hide");
+				isValid = false;
+			} else {
+				$("#password-error").addClass("hide");
+			}
+
+			// Validate invitation code
+			var invitationCode = $("#invitationCode").val().trim();
+			if (invitationCode === "") {
+				$("#invitationCode-error").removeClass("hide");
+				isValid = false;
+			} else {
+				$("#invitationCode-error").addClass("hide");
+			}
+
+			return isValid;
+		}
+	</script>
 </html>

@@ -3,6 +3,9 @@ package life.study.community.mapper;
 import life.study.community.model.Topic;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  *
@@ -21,4 +24,11 @@ public interface TopicMapper {
     @Insert("insert into `topic` (`title`,`content`,`publish_by`,`create_time`,`modified_time`,`tag`) values " +
             "(#{title},#{content},#{publishBy},#{createTime},#{modifiedTime},#{tag})")
     int insertTopic(Topic topic);
+
+    /**
+     * 获取帖子列表
+     * @return
+     */
+    @Select("select * from `topic`")
+    List<Topic> getTopicList();
 }

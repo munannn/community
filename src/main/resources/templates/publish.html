@@ -16,7 +16,7 @@
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">灯塔</span>
             </button>
-            <a class="navbar-brand" href="#">灯塔</a>
+            <a class="navbar-brand" href="/">灯塔</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -62,16 +62,19 @@
             <form action="/publish" method="post" onsubmit="return validateForm()">
                 <div class="form-group">
                     <label for="title">帖子标题：</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题......">
+                    <input type="text" class="form-control" id="title" name="title" th:value="${title}" placeholder="帖子标题......">
                 </div>
                 <div class="form-group">
                     <label for="content">帖子内容：</label>
-                    <textarea class="form-control" name="content" id="content" cols="30" rows="10"></textarea>
+                    <textarea class="form-control" name="content" id="content" th:text="${content}" cols="30" rows="10" placeholder="帖子内容......"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tag">添加标签：</label>
-                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签，以，分隔">
+                    <input type="text" class="form-control" id="tag" name="tag" th:value="${tag}" placeholder="输入标签，以，分隔">
                 </div>
+                <span th:if="${error != null && msg == null}">
+                    <span class="alert alert-success" role="alert" th:text="${error}">...</span>
+                </span>
                 <span th:if="${msg != null}">
                     <span class="alert alert-success" role="alert" th:text="${msg}">...</span>
                 </span>
@@ -93,18 +96,19 @@
         let content = document.getElementById("content").value;
         let tag = document.getElementById("tag").value;
         if (title.trim() === "") {
-            alert("请输入帖子标题");
+            alert("帖子标题不能为空");
             return false;
         }
         if (content.trim() === "") {
-            alert("请输入帖子内容");
+            alert("帖子内容不能为空");
             return false;
         }
         if (tag.trim() === "") {
-            alert("请输入标签");
+            alert("标签不能为空");
             return false;
         }
-        return true; // 允许表单提交
+        // 允许表单提交
+        return true;
     }
 </script>
 </html>

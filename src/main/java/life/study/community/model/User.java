@@ -15,7 +15,9 @@ import java.util.Date;
 public class User {
     private Integer id;
     private String account;
+    private String username;
     private String password;
+    private String avatarUrl;
     private Integer role;
     private String token;
     private String createBy;

@@ -32,12 +32,12 @@ public class PublishController {
     private TopicMapper topicMapper;
 
     @RequestMapping("/publishPage")
-    public String publishPage() {
+    public String toPublishPage() {
         return "publish";
     }
 
     @PostMapping("/publish")
-    public String publish(@RequestParam(name = "title") String title,
+    public String doPublish(@RequestParam(name = "title") String title,
                           @RequestParam(name = "content") String content,
                           @RequestParam(name = "tag") String tag,
                           HttpServletRequest request,
@@ -47,11 +47,25 @@ public class PublishController {
         model.addAttribute("content",content);
         model.addAttribute("tag",tag);
 
+        // 校验内容
+        if(title == null || "".equals(title)){
+            model.addAttribute("error", "帖子标题不能为空");
+            return "publish";
+        }
+        if(content == null || "".equals(content)){
+            model.addAttribute("error", "帖子内容不能为空");
+            return "publish";
+        }
+        if(tag == null || "".equals(tag)){
+            model.addAttribute("error", "标签不能为空");
+            return "publish";
+        }
+
         int userId = 0;
-        // 获取cookie，通过cookie得到当前登录用户
+        // 获取cookie，通过cookie得到当前登录用户 (后续修改，封装方法)
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("token")) {
+            if ("token".equals(cookie.getName())) {
                 String token = cookie.getValue();
                 User user = userMapper.selectUserByToken(token);
                 if (user != null) {

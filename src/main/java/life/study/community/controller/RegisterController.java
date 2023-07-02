@@ -33,9 +33,10 @@ public class RegisterController {
 
     @PostMapping("/register")
     public String doRegister(@RequestParam("account") String account,
+                           @RequestParam("username") String username,
                            @RequestParam("password") String password,
                            @RequestParam("invitationCode") String invitationCode) {
-        System.out.println(account + " " + password + " " + invitationCode);
+        System.out.println(account + " " + username + " " + password + " " + invitationCode);
         // 查看用户是否已存在
         User user = userMapper.selectUserByAccount(account);
         System.out.println("user:" + user);
@@ -47,6 +48,7 @@ public class RegisterController {
                 // 插入用户记录
                 User newUser = new User();
                 newUser.setAccount(account);
+                newUser.setUsername(username);
                 newUser.setPassword(password);
                 newUser.setRole(invitee.getRole());
                 String token = UUID.randomUUID().toString();

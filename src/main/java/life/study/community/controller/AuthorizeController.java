@@ -41,10 +41,10 @@ public class AuthorizeController {
     @GetMapping("/callback")
     public String callbacks(@RequestParam(name = "code") String code, HttpServletResponse response) {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
-        accessTokenDTO.setClient_id(clientId);
-        accessTokenDTO.setClient_secret(clientSecret);
+        accessTokenDTO.setClientId(clientId);
+        accessTokenDTO.setClientSecret(clientSecret);
         accessTokenDTO.setCode(code);
-        accessTokenDTO.setRedirect_id(redirectId);
+        accessTokenDTO.setRedirectId(redirectId);
         // 调用API得到github传来的token
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         // 通过携带该token，调用API登录并获取用户信息
@@ -72,7 +72,7 @@ public class AuthorizeController {
             response.addCookie(cookie);
             // 重定向回首页
         } else {
-            // 登录失败
+            // 登录失败https://
         }
         return "redirect:/";
     }
