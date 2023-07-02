@@ -13,6 +13,14 @@ import org.apache.ibatis.annotations.*;
 public interface UserMapper {
 
     /**
+     * 根据账号查用户
+     * @param account
+     * @return
+     */
+    @Select("select * from `user` where account = #{account}")
+    User selectUserByAccount(String account);
+
+    /**
      * 根据账号密码查询用户
      * @param account
      * @param password
@@ -46,4 +54,12 @@ public interface UserMapper {
             "`is_deleted`,`deleted_time`) values (#{account},#{password},#{role},#{token},#{createBy},#{createTime}," +
             "#{modifiedTime},#{isDeleted},#{deletedTime})")
     int insertUser(User user);
+
+    /**
+     * 删除用户的token
+     * @param token
+     * @return
+     */
+    @Update("update `user` set `token` = '' where `token` = #{token}")
+    int clearUserToken(String token);
 }

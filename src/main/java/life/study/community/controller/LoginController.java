@@ -29,7 +29,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam("account") String account,
+    public String doLogin(@RequestParam("account") String account,
                         @RequestParam("password") String password,
                         HttpServletResponse response) {
         User userObj = userMapper.selectUserByAccountAndPassword(account, password);
@@ -43,6 +43,7 @@ public class LoginController {
             // 写入cookie到浏览器
             Cookie cookie = new Cookie("token", token);
             cookie.setPath("/");
+//            cookie.setMaxAge(8*60*60+10);
             response.addCookie(cookie);
         } else {
             System.out.println("用户不存在！");

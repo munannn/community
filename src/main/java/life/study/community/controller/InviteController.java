@@ -46,14 +46,14 @@ public class InviteController {
     }
 
     @PostMapping("/invite")
-    public String invite(@RequestParam("invitee") String invitee,
+    public String doInvite(@RequestParam("invitee") String invitee,
                          @RequestParam("email") String email,
                          @RequestParam("role") Integer role,
                          HttpServletRequest request) {
         // 获取cookie，通过cookie得到当前登录用户
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("token")) {
+            if ("token".equals(cookie.getName())) {
                 String token = cookie.getValue();
                 User user = userMapper.selectUserByToken(token);
                 if (user != null) {

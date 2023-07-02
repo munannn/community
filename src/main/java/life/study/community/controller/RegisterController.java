@@ -32,12 +32,12 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam("account") String account,
+    public String doRegister(@RequestParam("account") String account,
                            @RequestParam("password") String password,
                            @RequestParam("invitationCode") String invitationCode) {
         System.out.println(account + " " + password + " " + invitationCode);
         // 查看用户是否已存在
-        User user = userMapper.selectUserByAccountAndPassword(account, password);
+        User user = userMapper.selectUserByAccount(account);
         System.out.println("user:" + user);
         if (user == null) {
             // 通过邀请码注册

@@ -32,11 +32,12 @@ public interface InvitationMapper {
      * @param invitationCode
      * @return
      */
-    @Select("select * from `invitation` where `invitee` = #{invitee} and `invite_code` = #{invitationCode} and `is_use` = 0")
+    @Select("select * from `invitation` where `invitee` = #{invitee} and `invite_code` = #{invitationCode} and " +
+            "`is_use` = 0")
     Invitation selectInvitationByInviteeAndInvitationCode(String invitee, String invitationCode);
 
     /**
-     * 通过邀请码注册后，邀请码作废
+     * 邀请码使用一次后作废，不可再次使用
      *
      * @param inviter
      * @param invitee

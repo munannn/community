@@ -51,6 +51,9 @@
                         <li><a href="#">退出登录</a></li>
                     </ul>
                 </li>
+                <li th:if="${session.user != null}">
+                    <a href="/logout">退出</a>
+                </li>
             </ul>
         </div>
     </div>
