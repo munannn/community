@@ -1,5 +1,6 @@
 package life.study.community.controller;
 
+import life.study.community.dto.PaginationDTO;
 import life.study.community.dto.TopicDTO;
 import life.study.community.mapper.GitHubUserMapper;
 import life.study.community.mapper.UserMapper;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +38,9 @@ public class IndexController {
 
     @RequestMapping("/")
     public String index(HttpServletRequest request,
-                        Model model) {
+                        Model model,
+                        @RequestParam(name = "page", defaultValue = "1") Integer page,
+                        @RequestParam(name = "size", defaultValue = "5") Integer size) {
         HttpSession session = request.getSession();
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -45,17 +49,17 @@ public class IndexController {
                 if ("token".equals(cookie.getName())) {
                     String token = cookie.getValue();
                     User user = userMapper.selectUserByToken(token);
-                    if(user != null) {
+                    if (user != null) {
                         session.setAttribute("user", user);
                     }
                     break;
-                }else {
-                    session.setAttribute("user",null);
+                } else {
+                    session.setAttribute("user", null);
                 }
             }
         }
-        List<TopicDTO> topicDTOList = topicService.getTopicList();
-        model.addAttribute("topicList",topicDTOList);
+        PaginationDTO<TopicDTO> pageData = topicService.list(page, size);
+        model.addAttribute("pageData", pageData);
         return "index";
     }
 }

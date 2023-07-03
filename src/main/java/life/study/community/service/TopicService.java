@@ -1,5 +1,6 @@
 package life.study.community.service;
 
+import life.study.community.dto.PaginationDTO;
 import life.study.community.dto.TopicDTO;
 import life.study.community.mapper.TopicMapper;
 import life.study.community.mapper.UserMapper;
@@ -25,9 +26,39 @@ public class TopicService {
     @Autowired
     private TopicMapper topicMapper;
 
+
+    public PaginationDTO<TopicDTO> list(Integer page, Integer size) {
+        PaginationDTO<TopicDTO> paginationDTO = new PaginationDTO<>();
+        Integer totalCount = topicMapper.getCount();
+        paginationDTO.setPagination(totalCount, page, size);
+        if (page < 1) {
+            page = 1;
+        }
+        if (page > paginationDTO.getTotalPage()) {
+            page = paginationDTO.getTotalPage();
+        }
+
+        // 分页偏移量
+        Integer offset = (page - 1) * size;
+        // 分页数据
+        List<Topic> topicList = topicMapper.page(offset, size);
+        List<TopicDTO> topicDTOList = new ArrayList<>();
+
+        for (Topic topic : topicList) {
+            User user = userMapper.selectUserById(topic.getPublishBy());
+            TopicDTO topicDTO = new TopicDTO();
+            BeanUtils.copyProperties(topic, topicDTO);
+            topicDTO.setUser(user);
+            topicDTOList.add(topicDTO);
+        }
+        paginationDTO.setData(topicDTOList);
+        return paginationDTO;
+    }
+
     /**
-     * 页面展示帖子，包含帖子内容与用户头像
+     * 所有帖子，包含帖子内容与用户头像
      * 关联UserMapper与TopicMapper转化为目标对象TopicDTO
+     *
      * @return
      */
     public List<TopicDTO> getTopicList() {

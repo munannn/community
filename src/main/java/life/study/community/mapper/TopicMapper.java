@@ -14,7 +14,7 @@ import java.util.List;
  * @date 2023/6/20 17:41
  */
 @Mapper
-public interface TopicMapper {
+public interface TopicMapper{
 
     /**
      * 插入一条帖子
@@ -31,4 +31,20 @@ public interface TopicMapper {
      */
     @Select("select * from `topic`")
     List<Topic> getTopicList();
+
+    /**
+     * 得到topic表的总记录数
+     * @return
+     */
+    @Select("select count(*) from `topic`")
+    Integer getCount();
+
+    /**
+     * 分页查询
+     * @param offset
+     * @param size
+     * @return
+     */
+    @Select("select * from `topic` limit #{offset},#{size}")
+    List<Topic> page(Integer offset, Integer size);
 }
