@@ -25,12 +25,16 @@
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading" th:text="${topic.title}"></h4>
-                        <span class="text-desc">• <span th:text="${topic.user.username}"></span> 发布了帖子 • <span
-                                th:text="${topic.likeCount}"></span> 人点赞 • <span
-                                th:text="${topic.commentCount}"></span> 个回复 • <span
-                                th:text="${topic.viewCount}"></span> 次浏览 • <span
-                                th:text="${#dates.format(topic.createTime, 'yyyy-MM-dd HH:mm:ss')}"></span> 发布</span>
+                        <h4 class="media-heading">
+                            <a th:href="@{/topics/{id}(id=${topic.id})}" th:text="${topic.title}"></a>
+                        </h4>
+                        <span class="text-desc">
+                            • <span th:text="${topic.user.username}"></span> 发布了帖子
+                            • <span th:text="${topic.likeCount}"></span> 人点赞
+                            • <span th:text="${topic.commentCount}"></span> 个回复
+                            • <span th:text="${topic.viewCount}"></span> 次浏览
+                            • <span th:text="${#dates.format(topic.createTime, 'yyyy-MM-dd HH:mm:ss')}"></span>发布
+                        </span>
                     </div>
                     <span class="margin-bo">&nbsp;</span>
                 </div>

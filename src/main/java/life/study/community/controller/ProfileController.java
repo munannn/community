@@ -24,6 +24,15 @@ public class ProfileController {
     @Autowired
     private TopicService topicService;
 
+    /**
+     * 根据点击内容跳转到对应模块
+     * @param request
+     * @param action
+     * @param model
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping("/profile/{action}")
     public String profile(HttpServletRequest request,
                           @PathVariable(name = "action") String action,

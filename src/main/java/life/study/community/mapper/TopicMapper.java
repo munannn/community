@@ -1,10 +1,8 @@
 package life.study.community.mapper;
 
+import life.study.community.dto.TopicDTO;
 import life.study.community.model.Topic;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -63,4 +61,23 @@ public interface TopicMapper {
      */
     @Select("select * from `topic` where `publish_by` = #{id} limit #{offset},#{size}")
     List<Topic> pageById(@Param(value = "id") Integer userId, Integer offset, Integer size);
+
+    /**
+     * 根据帖子id查询对应帖子
+     *
+     * @param id
+     * @return
+     */
+    @Select("select * from `topic` where id = #{id}")
+    Topic selectById(Integer id);
+
+    /**
+     * 根据帖子id修改帖子
+     *
+     * @param topic
+     * @param id
+     */
+    @Update("update `topic` set `title` = #{topic.title}, `content` = #{topic.content}, `modified_time` = #{topic.modifiedTime}, `tag` " +
+            "= #{topic.tag} where `id` = #{topicId}")
+    void updateTopicById(Topic topic,@Param(value = "topicId") Integer id);
 }

@@ -25,11 +25,15 @@
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading" th:text="${topic.title}"></h4>
-                        <span class="text-desc">• <span th:text="${topic.likeCount}"></span> 人点赞
+                        <h4 class="media-heading">
+                            <a th:href="@{/topics/{id}(id=${topic.id})}" th:text="${topic.title}"></a>
+                        </h4>
+                        <span class="text-desc">
+                            • <span th:text="${topic.likeCount}"></span> 人点赞
                             • <span th:text="${topic.commentCount}"></span> 个回复
                             • <span th:text="${topic.viewCount}"></span> 次浏览
-                            • <span th:text="${#dates.format(topic.createTime, 'yyyy-MM-dd HH:mm:ss')}"></span> 发布</span>
+                            • <span th:text="${#dates.format(topic.createTime, 'yyyy-MM-dd HH:mm:ss')}"></span> 发布
+                        </span>
                     </div>
                     <span class="margin-bo">&nbsp;</span>
                 </div>
@@ -41,7 +45,8 @@
                             </a>
                         </li>
                         <li th:class="${pageData.page==1}?'disabled':''">
-                            <a th:href="@{/profile/{section}/(page=${pageData.page - 1},section=${section})}" aria-label="Previous">
+                            <a th:href="@{/profile/{section}/(page=${pageData.page - 1},section=${section})}"
+                               aria-label="Previous">
                                 <span aria-hidden="true">&lt;</span>
                             </a>
                         </li>
@@ -49,12 +54,14 @@
                             <a th:text="${page}" th:href="@{/profile/{section}/(page=${page},section=${section})}">1</a>
                         </li>
                         <li th:class="${pageData.page==pageData.totalPage}?'disabled':''">
-                            <a th:href="@{/profile/{section}/(page=${pageData.page + 1},section=${section})}" aria-label="Next">
+                            <a th:href="@{/profile/{section}/(page=${pageData.page + 1},section=${section})}"
+                               aria-label="Next">
                                 <span aria-hidden="true">&gt;</span>
                             </a>
                         </li>
                         <li th:class="${pageData.page >= (pageData.totalPage - 3)}?'disabled':''">
-                            <a th:href="@{/profile/{section}/(page=${pageData.totalPage},section=${section})}" aria-label="Next">
+                            <a th:href="@{/profile/{section}/(page=${pageData.totalPage},section=${section})}"
+                               aria-label="Next">
                                 <span aria-hidden="true">&gt;&gt;</span>
                             </a>
                         </li>
