@@ -1,12 +1,10 @@
 package life.study.community.controller;
 
 import life.study.community.mapper.InvitationMapper;
-import life.study.community.mapper.UserMapper;
 import life.study.community.model.Invitation;
 import life.study.community.model.User;
 import life.study.community.util.InvitationCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailMessage;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
@@ -31,14 +28,7 @@ public class InviteController {
     @Resource
     private JavaMailSender javaMailSender;
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
     private InvitationMapper invitationMapper;
-
-    /**
-     * 邮件的发送方，即邀请人
-     */
-    private String from;
 
     @RequestMapping("/invitePage")
     public String invitePage() {
@@ -47,21 +37,16 @@ public class InviteController {
 
     @PostMapping("/invite")
     public String doInvite(@RequestParam("invitee") String invitee,
-                         @RequestParam("email") String email,
-                         @RequestParam("role") Integer role,
-                         HttpServletRequest request) {
-        // 获取cookie，通过cookie得到当前登录用户
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if ("token".equals(cookie.getName())) {
-                String token = cookie.getValue();
-                User user = userMapper.selectUserByToken(token);
-                if (user != null) {
-                    from = user.getAccount();
-                }
-                break;
-            }
-        }
+                           @RequestParam("email") String email,
+                           @RequestParam("role") Integer role,
+                           HttpServletRequest request) {
+        // 通过session得到当前登录用户
+        User user = (User) request.getSession().getAttribute("user");
+        /**
+         * 邮件的发送方，即邀请人
+         */
+        String from = user.getAccount();
+
         // 发送邮件
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         // 邮件发送方

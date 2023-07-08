@@ -27,9 +27,18 @@ public class TopicService {
     private TopicMapper topicMapper;
 
 
+    /**
+     * 分页查询返回帖子
+     * @param page
+     * @param size
+     * @return
+     */
     public PaginationDTO<TopicDTO> list(Integer page, Integer size) {
         PaginationDTO<TopicDTO> paginationDTO = new PaginationDTO<>();
         Integer totalCount = topicMapper.getCount();
+        if(totalCount < 1) {
+            return null;
+        }
         paginationDTO.setPagination(totalCount, page, size);
         if (page < 1) {
             page = 1;
@@ -56,23 +65,40 @@ public class TopicService {
     }
 
     /**
-     * 所有帖子，包含帖子内容与用户头像
-     * 关联UserMapper与TopicMapper转化为目标对象TopicDTO
-     *
+     * 根据用户id分页查询返回帖子
+     * @param userId
+     * @param page
+     * @param size
      * @return
      */
-    public List<TopicDTO> getTopicList() {
+    public PaginationDTO<TopicDTO> listById(Integer userId, Integer page, Integer size) {
+        PaginationDTO<TopicDTO> paginationDTO = new PaginationDTO<>();
+        Integer totalCount = topicMapper.getCountById(userId);
+        if(totalCount < 1) {
+            return null;
+        }
+        paginationDTO.setPagination(totalCount, page, size);
+        if (page < 1) {
+            page = 1;
+        }
+        if (page > paginationDTO.getTotalPage()) {
+            page = paginationDTO.getTotalPage();
+        }
+
+        // 分页偏移量
+        Integer offset = (page - 1) * size;
+        // 分页数据
+        List<Topic> topicList = topicMapper.pageById(userId,offset, size);
         List<TopicDTO> topicDTOList = new ArrayList<>();
-        List<Topic> topicList = topicMapper.getTopicList();
-        //遍历topicList，查找对应的User，转换成DTO
+
         for (Topic topic : topicList) {
             User user = userMapper.selectUserById(topic.getPublishBy());
             TopicDTO topicDTO = new TopicDTO();
-            //使用BeanUtils将topic中的属性复制到topicDTO中
             BeanUtils.copyProperties(topic, topicDTO);
             topicDTO.setUser(user);
             topicDTOList.add(topicDTO);
         }
-        return topicDTOList;
+        paginationDTO.setData(topicDTOList);
+        return paginationDTO;
     }
 }

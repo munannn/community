@@ -43,7 +43,7 @@ public class LoginController {
             // 写入cookie到浏览器
             Cookie cookie = new Cookie("token", token);
             cookie.setPath("/");
-//            cookie.setMaxAge(8*60*60+10);
+            cookie.setMaxAge(8*60*60+10);
             response.addCookie(cookie);
         } else {
             System.out.println("用户不存在！");

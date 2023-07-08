@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="${sectionName}"></title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+    <script src="/js/jquery-3.7.0.min.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+</head>
+<body>
+<div th:replace="~{navigation :: nav}"></div>
+<div class="container-fluid main profile">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h2><span th:text="${sectionName}"></span></h2>
+            <hr>
+            <div th:if="${pageData != null && section == 'myTopics'}">
+                <div class="media" th:each="topic : ${pageData.data}">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded" th:src="${topic.user.avatarUrl}" alt="头像">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading" th:text="${topic.title}"></h4>
+                        <span class="text-desc">• <span th:text="${topic.likeCount}"></span> 人点赞
+                            • <span th:text="${topic.commentCount}"></span> 个回复
+                            • <span th:text="${topic.viewCount}"></span> 次浏览
+                            • <span th:text="${#dates.format(topic.createTime, 'yyyy-MM-dd HH:mm:ss')}"></span> 发布</span>
+                    </div>
+                    <span class="margin-bo">&nbsp;</span>
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li th:class="${pageData.page <= 4}?'disabled':''">
+                            <a th:href="@{/profile/{section}/(page=1,section=${section})}" aria-label="Previous">
+                                <span aria-hidden="true">&lt;&lt;</span>
+                            </a>
+                        </li>
+                        <li th:class="${pageData.page==1}?'disabled':''">
+                            <a th:href="@{/profile/{section}/(page=${pageData.page - 1},section=${section})}" aria-label="Previous">
+                                <span aria-hidden="true">&lt;</span>
+                            </a>
+                        </li>
+                        <li th:each="page : ${pageData.pages}" th:class="${pageData.page==page}?'active':''">
+                            <a th:text="${page}" th:href="@{/profile/{section}/(page=${page},section=${section})}">1</a>
+                        </li>
+                        <li th:class="${pageData.page==pageData.totalPage}?'disabled':''">
+                            <a th:href="@{/profile/{section}/(page=${pageData.page + 1},section=${section})}" aria-label="Next">
+                                <span aria-hidden="true">&gt;</span>
+                            </a>
+                        </li>
+                        <li th:class="${pageData.page >= (pageData.totalPage - 3)}?'disabled':''">
+                            <a th:href="@{/profile/{section}/(page=${pageData.totalPage},section=${section})}" aria-label="Next">
+                                <span aria-hidden="true">&gt;&gt;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div th:if="${pageData == null && section == 'myTopics'}">
+                <h3>您还未发布过帖子，快去贡献吧！</h3>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <div class="list-group section">
+                <a href="/profile/myTopics"
+                   th:class="${section=='myTopics'}?'list-group-item active':'list-group-item'">我的帖子</a>
+                <a href="/profile/latestReplies"
+                   th:class="${section=='latestReplies'}?'list-group-item active':'list-group-item'">最新回复
+                    <span class="badge">13</span>
+                </a>
+                <a href="#" class="list-group-item">Morbi leo risus</a>
+                <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+                <span th:if="${session.user != null && session.user.role==0}">
+                    <a href="#" class="list-group-item">邀请好友加入</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function confirmLogout() {
+        let confirmed = confirm("您确定要退出登录吗？");
+        if (confirmed) {
+            window.location.href = "/logout";
+        }
+    }
+</script>
+</html>

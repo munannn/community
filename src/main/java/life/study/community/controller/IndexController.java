@@ -2,22 +2,12 @@ package life.study.community.controller;
 
 import life.study.community.dto.PaginationDTO;
 import life.study.community.dto.TopicDTO;
-import life.study.community.mapper.GitHubUserMapper;
-import life.study.community.mapper.UserMapper;
-import life.study.community.model.GitHubUser;
-import life.study.community.model.User;
 import life.study.community.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * @author 木南
@@ -26,38 +16,13 @@ import java.util.List;
  */
 @Controller
 public class IndexController {
-
-    @Autowired
-    private GitHubUserMapper gitHubUserMapper;
-
-    @Autowired
-    private UserMapper userMapper;
-
     @Autowired
     private TopicService topicService;
 
     @RequestMapping("/")
-    public String index(HttpServletRequest request,
-                        Model model,
+    public String index(Model model,
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
                         @RequestParam(name = "size", defaultValue = "5") Integer size) {
-        HttpSession session = request.getSession();
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                //验证登录状态，当浏览器中存在token即为已登录，反之未登录
-                if ("token".equals(cookie.getName())) {
-                    String token = cookie.getValue();
-                    User user = userMapper.selectUserByToken(token);
-                    if (user != null) {
-                        session.setAttribute("user", user);
-                    }
-                    break;
-                } else {
-                    session.setAttribute("user", null);
-                }
-            }
-        }
         PaginationDTO<TopicDTO> pageData = topicService.list(page, size);
         model.addAttribute("pageData", pageData);
         return "index";
