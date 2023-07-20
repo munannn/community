@@ -34,9 +34,6 @@
                     <li th:if="${session.user == null}">
                         <a href="https://github.com/login/oauth/authorize?client_id=2460e9ed3a43ca25a73e&redirect_uri=http://localhost:8887/callback&scope=gitHubUser&state=1">github登录</a>
                     </li>
-                    <li th:if="${session.user != null && session.user.role == 0}">
-                        <a href="/invitePage">邀请用户</a>
-                    </li>
                     <li th:if="${session.user != null}">
                         <a href="/publishPage">发帖</a>
                     </li>

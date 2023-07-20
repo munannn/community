@@ -1,6 +1,5 @@
 package life.study.community.mapper;
 
-import life.study.community.dto.TopicDTO;
 import life.study.community.model.Topic;
 import org.apache.ibatis.annotations.*;
 
@@ -76,8 +75,9 @@ public interface TopicMapper {
      *
      * @param topic
      * @param id
+     * @return
      */
     @Update("update `topic` set `title` = #{topic.title}, `content` = #{topic.content}, `modified_time` = #{topic.modifiedTime}, `tag` " +
             "= #{topic.tag} where `id` = #{topicId}")
-    void updateTopicById(Topic topic,@Param(value = "topicId") Integer id);
+    int updateTopicById(Topic topic,@Param(value = "topicId") Integer id);
 }

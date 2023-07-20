@@ -1,6 +1,8 @@
 package life.study.community.controller;
 
 import life.study.community.dto.TopicDTO;
+import life.study.community.exception.CustomizeException;
+import life.study.community.exception.StatusCode;
 import life.study.community.model.Topic;
 import life.study.community.model.User;
 import life.study.community.service.TopicService;
@@ -74,24 +76,8 @@ public class PublishController {
 
         // 通过帖子id查找是否有该帖子，进行插入或修改操作
         TopicDTO topicDTO = null;
-        if(id != null){
+        if (id != null) {
             topicDTO = topicService.selectById(id);
-        }
-        if (topicDTO != null) {
-            // 验证当前用户是否有权限修改该帖子
-            boolean canUpdate = topicService.checkTopicById(user.getId(), topicDTO.getPublishBy());
-            if (canUpdate) {
-                Topic topic = new Topic();
-                topic.setTitle(title);
-                topic.setContent(content);
-                Date date = new Date();
-                topic.setModifiedTime(date);
-                topic.setTag(tag);
-                topicService.updateTopicById(topic, id);
-            } else {
-                model.addAttribute("error", "您只能编辑您发布的帖子！");
-                return "publish";
-            }
         } else {
             Topic topic = new Topic();
             topic.setTitle(title);
@@ -103,6 +89,26 @@ public class PublishController {
             topic.setTag(tag);
             // 插入帖子记录
             topicService.insertTopic(topic);
+        }
+        if (topicDTO != null) {
+            // 根据用户id与帖子发布者，验证该用户是否可以修改该帖子
+            boolean canUpdate = user.getId().equals(topicDTO.getPublishBy());
+            if (canUpdate) {
+                Topic topic = new Topic();
+                topic.setTitle(title);
+                topic.setContent(content);
+                Date date = new Date();
+                topic.setModifiedTime(date);
+                topic.setTag(tag);
+                int updated = topicService.updateTopicById(topic, id);
+                // 进入这里说明帖子存在，updated不等于1说明当前用户停留在修改页面时，该帖子已被删除
+                if (updated != 1) {
+                    throw new CustomizeException(StatusCode.TOPIC_NOT_FOUND);
+                }
+            } else {
+                model.addAttribute("error", "您只能编辑您发布的帖子！");
+                return "publish";
+            }
         }
         model.addAttribute("msg", "发布成功！");
         return "publish";

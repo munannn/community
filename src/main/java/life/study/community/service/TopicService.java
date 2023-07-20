@@ -2,6 +2,8 @@ package life.study.community.service;
 
 import life.study.community.dto.PaginationDTO;
 import life.study.community.dto.TopicDTO;
+import life.study.community.exception.CustomizeException;
+import life.study.community.exception.StatusCode;
 import life.study.community.mapper.TopicMapper;
 import life.study.community.mapper.UserMapper;
 import life.study.community.model.Topic;
@@ -112,6 +114,9 @@ public class TopicService {
      */
     public TopicDTO selectById(Integer id) {
         Topic topic = topicMapper.selectById(id);
+        if(topic == null) {
+            throw new CustomizeException(StatusCode.TOPIC_NOT_FOUND);
+        }
         // 将Topic对象转换成TopicDTO对象
         TopicDTO topicDTO = new TopicDTO();
         BeanUtils.copyProperties(topic, topicDTO);
@@ -121,24 +126,13 @@ public class TopicService {
     }
 
     /**
-     * 根据用户id与帖子发布者，验证该用户是否可以修改该帖子
-     *
-     * @param userId
-     * @param publishBy
-     * @return
-     */
-    public boolean checkTopicById(Integer userId, Integer publishBy) {
-        return userId.equals(publishBy);
-    }
-
-    /**
      * 修改帖子
      *
      * @param id
      * @param topic
      */
-    public void updateTopicById(Topic topic,Integer id) {
-        topicMapper.updateTopicById(topic, id);
+    public int updateTopicById(Topic topic,Integer id) {
+        return topicMapper.updateTopicById(topic, id);
     }
 
     /**

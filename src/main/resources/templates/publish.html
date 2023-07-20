@@ -34,7 +34,7 @@
                            placeholder="输入标签，以，分隔">
                 </div>
                 <span th:if="${error != null && msg == null}">
-                    <span class="alert alert-success" role="alert" th:text="${error}">...</span>
+                    <span class="alert alert-danger" role="alert" th:text="${error}">...</span>
                 </span>
                 <span th:if="${msg != null}">
                     <span class="alert alert-success" role="alert" th:text="${msg}">...</span>
